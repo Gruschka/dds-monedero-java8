@@ -36,17 +36,15 @@ public class Cuenta {
     if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
-//Code smell 6. Relacionado con el 1. Instancia un movimiento y hace que se agregue a esta cuenta cuando hay un metodo
-// agregarMovimiento que lo instancia y lo agrega a la lista. Tendria mas sentido desacoplar la cuenta del movimiento y hacer que
-//  la cuenta pueda crear un movimiento y que este
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
+
+    agregarMovimiento(LocalDate.now(), cuanto, true);
   }
 
   public void sacar(double cuanto) {
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
     }
-    
+
 //    Code smell 4
     if (getSaldo() - cuanto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
@@ -60,12 +58,12 @@ public class Cuenta {
       throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
           + " diarios, límite: " + limite);
     }
-//    Code Smell 6 again
-    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
+    agregarMovimiento(LocalDate.now(), cuanto, false);
   }
 
   public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
     Movimiento movimiento = new Movimiento(fecha, cuanto, esDeposito);
+    movimiento.calcularValor(this);
     movimientos.add(movimiento);
   }
 

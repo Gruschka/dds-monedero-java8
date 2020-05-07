@@ -43,12 +43,6 @@ public class Movimiento {
     return !esDeposito;
   }
 
-  //Code smell 1: Probablemente un movimiento no necesite conocer su cuenta. La cuenta deberia agregarlos.
-  public void agregateA(Cuenta cuenta) {
-    cuenta.setSaldo(calcularValor(cuenta));
-    cuenta.agregarMovimiento(fecha, monto, esDeposito);
-  }
-
 //  Code smell2: Se podria desacoplar mas el movimiento de la cuenta. Solo necesita recibir un monto y devolverlo transformado segun
 //  el tipo de movimiento que sea
   public double calcularValor(Cuenta cuenta) {
