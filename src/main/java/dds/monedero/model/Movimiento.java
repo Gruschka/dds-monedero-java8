@@ -43,13 +43,12 @@ public class Movimiento {
     return !esDeposito;
   }
 
-//  Code smell2: Se podria desacoplar mas el movimiento de la cuenta. Solo necesita recibir un monto y devolverlo transformado segun
-//  el tipo de movimiento que sea
-  public double calcularValor(Cuenta cuenta) {
+
+  public double calcularValor(double valor) {
     if (esDeposito) {
-      return cuenta.getSaldo() + getMonto();
+      return valor + getMonto();
     } else {
-      return cuenta.getSaldo() - getMonto();
+      return valor - getMonto();
     }
   }
 }
